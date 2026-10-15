@@ -26,7 +26,7 @@ local POS_GRANJAS = {
     Vector3.new(-59.0, ALTURA_REAL, 30.3), -- Científico 1
     Vector3.new(-62.1, ALTURA_REAL, 22.7), -- Científico 2
     Vector3.new(-67.4, ALTURA_REAL, 34.4), -- Científico 3
-    Vector3.new(-64.2, ALTURA_REAL, 42.5)  -- Científico 4
+    Vector3.new(-53.4, ALTURA_REAL, 43.0)  -- Científico 4
 }
 local POS_TITANES = {
     Vector3.new(-18.9, ALTURA_REAL, 11.7),  -- Titán 1
