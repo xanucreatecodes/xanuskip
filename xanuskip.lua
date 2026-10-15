@@ -21,21 +21,21 @@ local WaveSkipEvent = NetworkFolder:WaitForChild("WaveSkip")
 local ALTURA_REAL = -47.456172943115234
 
 -- CONTROL DE COORDENADAS RECTIFICADAS E INDEXADAS
-local COORD_NINJA = Vector3.new(-27.1, ALTURA_REAL, 12.7) 
+local COORD_NINJA = Vector3.new(-23.6, ALTURA_REAL, 13.0) 
 local POS_GRANJAS = {
-    Vector3.new(-57.4, ALTURA_REAL, 30.3), -- Científico 1
+    Vector3.new(-59.0, ALTURA_REAL, 30.3), -- Científico 1
     Vector3.new(-62.1, ALTURA_REAL, 22.7), -- Científico 2
     Vector3.new(-67.4, ALTURA_REAL, 34.4), -- Científico 3
     Vector3.new(-64.2, ALTURA_REAL, 42.5)  -- Científico 4
 }
 local POS_TITANES = {
-    Vector3.new(-19.3, ALTURA_REAL, 11.2),  -- Titán 1
-    Vector3.new(-39.4, ALTURA_REAL, 3.4), -- Titán 2
-    Vector3.new(-41.4, ALTURA_REAL, 4.0), -- Titán 3
-    Vector3.new(-22.4, ALTURA_REAL, -13.6),  -- Titán 4
-    Vector3.new(-40.4, ALTURA_REAL, 11.6), -- Titán 5
-    Vector3.new(-31.1, ALTURA_REAL, -14.0),-- Titán 6
-    Vector3.new(-46.8, ALTURA_REAL, 14.5)  -- Titán 7
+    Vector3.new(-18.9, ALTURA_REAL, 11.7),  -- Titán 1
+    Vector3.new(-25.6, ALTURA_REAL, -5.8), -- Titán 2
+    Vector3.new(-31.6, ALTURA_REAL, -5.8), -- Titán 3
+    Vector3.new(-37.6, ALTURA_REAL, -5.8),  -- Titán 4
+    Vector3.new(-43.6, ALTURA_REAL, -5.8), -- Titán 5
+    Vector3.new(-50.6, ALTURA_REAL, -5.8),-- Titán 6
+    Vector3.new(-57.6, ALTURA_REAL, -5.8)  -- Titán 7
 }
 
 local ID_CIENTIFICO = "a6834074-9392-47d5-9463-c642a5bcaac2"
