@@ -33,9 +33,9 @@ local POS_TITANES = {
     Vector3.new(-25.6, ALTURA_REAL, -5.8), -- Titán 2
     Vector3.new(-31.6, ALTURA_REAL, -5.8), -- Titán 3
     Vector3.new(-37.6, ALTURA_REAL, -5.8),  -- Titán 4
-    Vector3.new(-43.6, ALTURA_REAL, -5.8), -- Titán 5
-    Vector3.new(-50.6, ALTURA_REAL, -5.8),-- Titán 6
-    Vector3.new(-57.6, ALTURA_REAL, -5.8)  -- Titán 7
+    Vector3.new(-31.6, ALTURA_REAL, 11.0), -- Titán 5
+    Vector3.new(-37.6, ALTURA_REAL, 11.8),-- Titán 6
+    Vector3.new(-43.6, ALTURA_REAL, 11.8)  -- Titán 7
 }
 
 local ID_CIENTIFICO = "a6834074-9392-47d5-9463-c642a5bcaac2"
