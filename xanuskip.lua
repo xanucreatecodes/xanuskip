@@ -130,7 +130,7 @@ task.spawn(function()
     task.wait(1.5)
     pcall(function()
         local CS = RemoteFunctionFolder:WaitForChild("ChangeSpeed", 5) or RemoteFunctionFolder:FindFirstChild("ChangeSpeed")
-        if CS then CS:InvokeServer(1.5) end
+        if CS then CS:InvokeServer(2) end
     end)
     task.wait(0.2)
     pcall(function()
