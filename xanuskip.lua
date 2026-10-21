@@ -36,7 +36,7 @@ local POS_TITANES = {
 local ID_TITAN_CINEMA = "e8cb33a2-304b-4e28-9815-a6fa82016c28"
 local ID_GLITCH_CAM = "4569b0c0-d418-4ca0-bdaf-737a57a2016f"
 local ID_LARGE_SCIENT = "a6d55ffc-92b2-4e79-ad4d-194f15175937"
-local ID_PUMPKIN = ad80d265-59ac-4f9a-b95b-a3143d987cf0"
+local ID_PUMPKIN = "ad80d265-59ac-4f9a-b95b-a3143d987cf0"
 local ID_REPARADOR = "60fee940-972d-452e-a709-a51a57945ad1" 
 
 local contadorSkip = 1
