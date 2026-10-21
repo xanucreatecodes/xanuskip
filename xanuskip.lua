@@ -33,11 +33,11 @@ local POS_TITANES = {
     Vector3.new(449.5, ALTURA_REAL, 333.0)
 }
 
-local ID_TITAN_CINEMA = "e8cb33a2-304b-4e28-9815-a6fa82016c28"
-local ID_GLITCH_CAM = "4569b0c0-d418-4ca0-bdaf-737a57a2016f"
-local ID_LARGE_SCIENT = "a6d55ffc-92b2-4e79-ad4d-194f15175937"
-local ID_PUMPKIN = "ad80d265-59ac-4f9a-b95b-a3143d987cf0"
-local ID_REPARADOR = "60fee940-972d-452e-a709-a51a57945ad1" 
+local ID_TITAN_CINEMA = "4404a2bc-c764-41f1-9a4c-c49c6fc75aca"
+local ID_GLITCH_CAM = "81a94448-bc55-42c7-967a-c1123ecdcfdd"
+local ID_LARGE_SCIENT = "1c3cd513-b663-4253-9ea4-3f6279256bf2"
+local ID_PUMPKIN = "d862fe16-5109-41ca-9ce9-09003470d739"
+local ID_REPARADOR = "267dc139-4cba-4b06-9876-0e8fe3ff2d3c" 
 
 local contadorSkip = 1
 local permitirSkip = true
