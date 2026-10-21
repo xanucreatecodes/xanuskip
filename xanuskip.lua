@@ -1,10 +1,8 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
-
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
 local NetworkFolder = ReplicatedStorage:WaitForChild("ModuleLoader"):WaitForChild("Shared"):WaitForChild("Network"):WaitForChild("RemoteEvent")
 local RemoteFunctionFolder = ReplicatedStorage:WaitForChild("ModuleLoader"):WaitForChild("Shared"):WaitForChild("Network"):WaitForChild("RemoteFunction")
 local TowerAddEvent = NetworkFolder:WaitForChild("TowerAdd")
@@ -12,45 +10,69 @@ local TowerUpgradeEvent = NetworkFolder:WaitForChild("TowerUpgrade")
 local TowerSellEvent = NetworkFolder:FindFirstChild("TowerSell") or NetworkFolder:WaitForChild("TowerSell", 2)
 local WaveSkipEvent = NetworkFolder:WaitForChild("WaveSkip")
 
-local ALTURA_REAL = -47.456172943115234
+local ALTURA_REAL = 618.4
 
-local POS_TV_WOMAN = {
-    Vector3.new(-44.3, ALTURA_REAL, 13.8),
-    Vector3.new(-47.9, ALTURA_REAL, -1.6)
-}
+local POS_STARTER = {Vector3.new(438.0, ALTURA_REAL, 341.4)}
 local POS_GRANJAS = {
-    Vector3.new(-54.0, ALTURA_REAL, 28.8),
-    Vector3.new(-58.0, ALTURA_REAL, 23.8),
-    Vector3.new(-62.64520263671875, ALTURA_REAL, 34.223361968994141),
-    Vector3.new(-60.9, ALTURA_REAL, 42.9)
+    Vector3.new(443.0, ALTURA_REAL, 313.8),
+    Vector3.new(462.0, ALTURA_REAL, 312.8),
+    Vector3.new(462.6, ALTURA_REAL, 302.2),
+    Vector3.new(440.9, ALTURA_REAL, 298.9)
+}
+local POS_REPARADOR = {Vector3.new(441.0, ALTURA_REAL, 330.0)} 
+local POS_MEDIOS = {
+    Vector3.new(443.6, ALTURA_REAL, 334.0),
+    Vector3.new(443.6, ALTURA_REAL, 334.0),
+    Vector3.new(443.6, ALTURA_REAL, 334.0),
+    Vector3.new(443.6, ALTURA_REAL, 334.0),
+    Vector3.new(443.6, ALTURA_REAL, 334.0),
+    Vector3.new(443.6, ALTURA_REAL, 334.0)
 }
 local POS_TITANES = {
-    Vector3.new(-40.6, ALTURA_REAL, -1.0),
-    Vector3.new(-50.3, ALTURA_REAL, 2.9),
-    Vector3.new(-49.0, ALTURA_REAL, -6.2),
-    Vector3.new(-35.4, ALTURA_REAL, -1.6),
-    Vector3.new(-48.6, ALTURA_REAL, 9.7),
-    Vector3.new(-47.8, ALTURA_REAL, -13.8)
+    Vector3.new(434.0, ALTURA_REAL, 333.0),
+    Vector3.new(449.5, ALTURA_REAL, 333.0)
 }
 
-local ID_CIENTIFICO = "a6834074-9392-47d5-9463-c642a5bcaac2"
-local ID_TV_WOMAN = "aa5acbd8-6201-44d1-a8cb-567fc82724d5"
-local ID_TITAN = "8499146f-b00a-4638-80c0-b69575471b48"
+local ID_TITAN_CINEMA = "e8cb33a2-304b-4e28-9815-a6fa82016c28"
+local ID_GLITCH_CAM = "4569b0c0-d418-4ca0-bdaf-737a57a2016f"
+local ID_LARGE_SCIENT = "a6d55ffc-92b2-4e79-ad4d-194f15175937"
+local ID_PUMPKIN = ad80d265-59ac-4f9a-b95b-a3143d987cf0"
+local ID_REPARADOR = "60fee940-972d-452e-a709-a51a57945ad1" 
 
 local contadorSkip = 1
+local permitirSkip = true
 _G.activarEscanerRejoin = false
-_G.TorresColocadas = { Granjas = {}, Titanes = {}, TvWoman = {} }
+_G.TorresColocadas = {Starter = {}, Granjas = {}, Reparador = {}, Medios = {}, Titanes = {}}
+
+local function obtenerOlaActual()
+    local n = 1
+    pcall(function()
+        local stats = PlayerGui:FindFirstChild("GameUI") and PlayerGui.GameUI:FindFirstChild("Stats") or PlayerGui:FindFirstChild("Stats", true)
+        local waveLabel = stats and stats:FindFirstChild("Wave")
+        if waveLabel and waveLabel.Text then
+            local match = string.match(waveLabel.Text, "%d+")
+            if match then n = tonumber(match) end
+        end
+    end)
+    return n
+end
 
 TowerAddEvent.OnClientEvent:Connect(function(data)
     if data and data.Pos and data.Id and data.Index then
-        for i, pos in ipairs(POS_GRANJAS) do
-            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Granjas[i] = { Id = data.Id, Index = data.Index } end
+        for i, pos in ipairs(POS_STARTER) do
+            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Starter[i] = {Id = data.Id, Index = data.Index} end
         end
-        for i, pos in ipairs(POS_TV_WOMAN) do
-            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.TvWoman[i] = { Id = data.Id, Index = data.Index } end
+        for i, pos in ipairs(POS_GRANJAS) do
+            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Granjas[i] = {Id = data.Id, Index = data.Index} end
+        end
+        for i, pos in ipairs(POS_REPARADOR) do
+            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Reparador[i] = {Id = data.Id, Index = data.Index} end
+        end
+        for i, pos in ipairs(POS_MEDIOS) do
+            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Medios[i] = {Id = data.Id, Index = data.Index} end
         end
         for i, pos in ipairs(POS_TITANES) do
-            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Titanes[i] = { Id = data.Id, Index = data.Index } end
+            if (data.Pos - pos).Magnitude < 4 then _G.TorresColocadas.Titanes[i] = {Id = data.Id, Index = data.Index} end
         end
     end
 end)
@@ -77,23 +99,29 @@ _G.colocarTorreDirecto = function(nombreInterno, unitId, posicion)
         Pos = posicion
     }
     TowerAddEvent:FireServer(struct)
-    task.wait(1.5) -- TIEMPO AUMENTADO: Colchón de resguardo para la red en colocación
+    task.wait(1.5)
 end
 
 _G.colocarTorreConFondos = function(nombreInterno, unitId, posicion, costoUnidad)
-    _G.esperarDinero(costoUnidad) 
+    _G.esperarDinero(costoUnidad)
     _G.colocarTorreDirecto(nombreInterno, unitId, posicion)
 end
 
 _G.mejorarTorreInvisibly = function(datosTorre, nivelDestino)
     if not datosTorre or not datosTorre.Id or not datosTorre.Index then return end
-    TowerUpgradeEvent:FireServer({ Id = datosTorre.Id, Index = datosTorre.Index, Level = nivelDestino })
-    task.wait(1.0) -- TIEMPO AUMENTADO: Espera de 1 segundo entre mejoras para limpiar el lag
+    TowerUpgradeEvent:FireServer({Id = datosTorre.Id, Index = datosTorre.Index, Level = nivelDestino})
+    task.wait(1.0)
 end
 
 task.spawn(function()
     while true do
-        pcall(function() WaveSkipEvent:FireServer(contadorSkip) contadorSkip = contadorSkip + 1 end)
+        if permitirSkip then
+            if obtenerOlaActual() >= 49 then
+                permitirSkip = false
+            else
+                pcall(function() WaveSkipEvent:FireServer(contadorSkip) contadorSkip = contadorSkip + 1 end)
+            end
+        end
         task.wait(1.2)
     end
 end)
@@ -102,7 +130,7 @@ task.spawn(function()
     task.wait(1.5)
     pcall(function()
         local CS = RemoteFunctionFolder:WaitForChild("ChangeSpeed", 5) or RemoteFunctionFolder:FindFirstChild("ChangeSpeed")
-        if CS then CS:InvokeServer(2) end
+        if CS then CS:InvokeServer(1.5) end
     end)
     task.wait(0.2)
     pcall(function()
@@ -116,107 +144,89 @@ task.spawn(function()
     task.wait(0.2)
     pcall(function()
         local ModeVoteEvent = NetworkFolder:WaitForChild("ModeVote", 5)
-        if ModeVoteEvent then ModeVoteEvent:FireServer("Insane") end
+        if ModeVoteEvent then ModeVoteEvent:FireServer("Nightmare") end
     end)
 end)
 
 task.spawn(function()
     task.wait(5.0)
-
-    _G.colocarTorreDirecto("Scientist Cameraman", ID_CIENTIFICO, POS_GRANJAS[1])
-    _G.colocarTorreDirecto("Scientist Cameraman", ID_CIENTIFICO, POS_GRANJAS[2])
     
-    _G.colocarTorreConFondos("Scientist Cameraman", ID_CIENTIFICO, POS_GRANJAS[3], 100)
+    _G.colocarTorreConFondos("Pumpkin Farmer", ID_PUMPKIN, POS_GRANJAS[1], 200)
     
-    _G.colocarTorreConFondos("Scientist Cameraman", ID_CIENTIFICO, POS_GRANJAS[4], 100)
-
-    _G.colocarTorreConFondos("Tv Woman", ID_TV_WOMAN, POS_TV_WOMAN[1], 650)
-    task.wait(2.0) -- ESPERA DISFRUTABLE: Tiempo de resguardo tras la TV Woman
+    _G.esperarDinero(300)
+    task.wait(1.5)
+    _G.colocarTorreConFondos("Large Scientist Cameraman", ID_LARGE_SCIENT, POS_STARTER[1], 300)
+    task.wait(0.5)
     
-    -- Mejoras Nivel 2
-    for i = 1, 4 do
-        _G.esperarDinero(300)
-        _G.mejorarTorreInvisibly(_G.TorresColocadas.Granjas[i], 2)
+    _G.colocarTorreConFondos("Pumpkin Farmer", ID_PUMPKIN, POS_GRANJAS[2], 200)
+    _G.colocarTorreConFondos("Pumpkin Farmer", ID_PUMPKIN, POS_GRANJAS[3], 200)
+    _G.colocarTorreConFondos("Pumpkin Farmer", ID_PUMPKIN, POS_GRANJAS[4], 200)
+    
+    local costosLarge = {750, 1200, 2000, 3000}
+    for lvl = 2, 5 do
+        _G.esperarDinero(costosLarge[lvl-1])
+        _G.mejorarTorreInvisibly(_G.TorresColocadas.Starter[1], lvl)
     end
-
-    _G.esperarDinero(850)
-    _G.mejorarTorreInvisibly(_G.TorresColocadas.TvWoman[1], 2)
-
-    -- Mejoras Nivel 3
-    for i = 1, 4 do
-        _G.esperarDinero(600)
-        _G.mejorarTorreInvisibly(_G.TorresColocadas.Granjas[i], 3)
+    
+    local mejorasPumkin = {300, 600, 900, 1800}
+    for lvl = 2, 5 do
+        for i = 1, 4 do
+            _G.esperarDinero(mejorasPumkin[lvl-1])
+            _G.mejorarTorreInvisibly(_G.TorresColocadas.Granjas[i], lvl)
+        end
     end
-
-    _G.esperarDinero(2500)
-    _G.mejorarTorreInvisibly(_G.TorresColocadas.TvWoman[1], 3)
-
-    -- Mejoras Nivel 4 (Aquí fallaba el de 900)
-    for i = 1, 4 do
-        _G.esperarDinero(900)
-        _G.mejorarTorreInvisibly(_G.TorresColocadas.Granjas[i], 4)
+    
+    local costosCinema = {2000, 3000, 5000, 9000, 19000}
+    for t = 1, 2 do
+        _G.colocarTorreConFondos("Titan Cinemaman", ID_TITAN_CINEMA, POS_TITANES[t], 2000)
+        task.wait(0.5)
+        for lvl = 2, 6 do
+            _G.esperarDinero(costosCinema[lvl-1])
+            _G.mejorarTorreInvisibly(_G.TorresColocadas.Titanes[t], lvl)
+        end
     end
-
-    -- Mejoras Nivel 5 (Aquí fallaba el de 2000)
-    for i = 1, 4 do
-        _G.esperarDinero(2000)
-        _G.mejorarTorreInvisibly(_G.TorresColocadas.Granjas[i], 5)
-    end
-
-    _G.esperarDinero(4000)
-    _G.mejorarTorreInvisibly(_G.TorresColocadas.TvWoman[1], 4)
-    _G.esperarDinero(9000)
-    _G.mejorarTorreInvisibly(_G.TorresColocadas.TvWoman[1], 5)
-
-    _G.colocarTorreConFondos("Tv Woman", ID_TV_WOMAN, POS_TV_WOMAN[2], 650)
+    
     task.wait(2.0)
     
-    local costosTvWoman = {850, 2500, 4000, 9000}
-    for lvl, costo in ipairs(costosTvWoman) do
-        _G.esperarDinero(costo)
-        _G.mejorarTorreInvisibly(_G.TorresColocadas.TvWoman[2], lvl + 1)
+    _G.colocarTorreConFondos("Camera Repair Drone", ID_REPARADOR, POS_REPARADOR[1], 400) 
+    local costosDrone = {500, 1000, 2000, 4000} 
+    for lvl = 2, 5 do
+        _G.esperarDinero(costosDrone[lvl-1])
+        _G.mejorarTorreInvisibly(_G.TorresColocadas.Reparador[1], lvl)
     end
-
-    -- Fase Ofensiva: 6 Titanes sin apuros de red
-    local costosTitan = {1500, 2500, 5500, 9500}
-    for t = 1, 6 do
-        _G.colocarTorreConFondos("Upgraded Titan Speakerman", ID_TITAN, POS_TITANES[t], 1000)
-        task.wait(1.5) -- TIEMPO EXTRA: Para que el servidor registre físicamente el Titán antes de mejorarlo
-        for lvl, costo in ipairs(costosTitan) do
-            _G.esperarDinero(costo)
-            _G.mejorarTorreInvisibly(_G.TorresColocadas.Titanes[t], lvl + 1)
+    
+    local costosGlitch = {1500, 3500, 8500}
+    for m = 1, 6 do
+        _G.colocarTorreConFondos("Glitch Cameraman", ID_GLITCH_CAM, POS_MEDIOS[m], 600)
+        task.wait(0.5)
+        for lvl = 2, 4 do
+            _G.esperarDinero(costosGlitch[lvl-1])
+            _G.mejorarTorreInvisibly(_G.TorresColocadas.Medios[m], lvl)
         end
     end
     
     task.wait(2)
-    _G.activarEscanerRejoin = true 
+    _G.activarEscanerRejoin = true
 end)
 
 task.spawn(function()
     local VirtualInputManager = game:GetService("VirtualInputManager")
     local partidaTerminadaReal = false
-
     while not partidaTerminadaReal do
         pcall(function()
             local LocalPlayer = game:GetService("Players").LocalPlayer
             local PlayerGui = LocalPlayer:FindFirstChild("PlayerGui")
-            
             local GameUI = PlayerGui:FindFirstChild("GameUI")
             local FinalUI = GameUI and GameUI:FindFirstChild("FinalUI")
-            
             if FinalUI and FinalUI.Visible == true then
                 for _, obj in pairs(FinalUI:GetDescendants()) do
                     if obj.Name == "PlayAgain" and obj:IsA("GuiButton") and obj.AbsoluteSize.X > 0 then
-                        
                         task.wait(3.5)
-                        
                         local posX = obj.AbsolutePosition.X + (obj.AbsoluteSize.X / 2) + 25
                         local posY = obj.AbsolutePosition.Y + (obj.AbsoluteSize.Y / 2) + 55
-                        
                         VirtualInputManager:SendMouseButtonEvent(posX, posY, 0, true, game, 1)
                         task.wait(0.05)
                         VirtualInputManager:SendMouseButtonEvent(posX, posY, 0, false, game, 1)
-                        
                         partidaTerminadaReal = true
                         break
                     end
